@@ -184,7 +184,7 @@ const updateExpense = async(req,res)=>{
     }
 }
 
-const removeExpense = async(req,res)=>{
+const deleteExpense = async(req,res)=>{
     const { _id,_expenseId} = req.body
 
     if (!_id || !_expenseId) {
@@ -229,3 +229,12 @@ const removeExpense = async(req,res)=>{
         return res.status(500).json({ success: false, message: "Internal Server Error" })
     }
 }
+
+const expenseController = {
+    addExpense,
+    updateExpense,
+    deleteExpense,
+    getOneExpense,
+    getAllExpense
+}
+module.exports = expenseController

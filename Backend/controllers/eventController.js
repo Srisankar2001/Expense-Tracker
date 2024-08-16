@@ -514,6 +514,8 @@ const budget = async (req, res) => {
 const eventController = {
     createEvent,
     deleteEvent,
+    finishEvent,
+    notFinishEvent,
     addFriend,
     removeFriend,
     updateEvent,

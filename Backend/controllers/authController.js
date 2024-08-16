@@ -76,9 +76,9 @@ const login = async (req, res) => {
 }
 
 const verify = async (req, res, next) => {
-    const token = res.cookie.token
+    const token = req.cookies.token
 
-    if (token) {
+    if (!token) {
         return res.status(400).json({ success: false, message: "Session Expired. Login Again." })
     }
 
@@ -98,9 +98,9 @@ const verify = async (req, res, next) => {
 }
 
 const details = async (req, res) => {
-    const token = res.cookie.token
+    const token = req.cookies.token
 
-    if (token) {
+    if (!token) {
         return res.status(400).json({ success: false, message: "Session Expired. Login Again." })
     }
 
