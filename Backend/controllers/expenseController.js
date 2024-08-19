@@ -4,13 +4,17 @@ const eventModel = require('../models/eventModel')
 const expenseModel = require('../models/expenseModel')
 
 const addExpense = async(req,res)=>{
-    const { _id,_eventId,name,amount} = req.body
+    const { _id,_paidById,_eventId,name,amount} = req.body
 
-    if (!_id || !_eventId || !amount || !name) {
+    if (!_id || !_paidById || !_eventId || !amount || !name) {
         return res.status(400).json({ success: false, message: "Input nessary data" })
     }
 
     if (!mongoose.Types.ObjectId.isValid(_id)) {
+        return res.status(400).json({ success: false, message: "Invalid user ID" });
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(_paidById)) {
         return res.status(400).json({ success: false, message: "Invalid user ID" });
     }
 
@@ -20,9 +24,14 @@ const addExpense = async(req,res)=>{
 
     try {
         const user = await userModel.findById(_id)
+        const paidBy = await userModel.findById(_paidById)
         const event = await eventModel.findById(_eventId)
 
         if (!user) {
+            return res.status(400).json({ success: false, message: "User Not Found" })
+        }
+
+        if (!paidBy) {
             return res.status(400).json({ success: false, message: "User Not Found" })
         }
 
@@ -36,11 +45,17 @@ const addExpense = async(req,res)=>{
             return res.status(400).json({ success: false, message: "Unauthorized access" })
         }
 
+        const isPaidByMember = event.members.includes(paidBy._id)
+
+        if (!isPaidByMember) {
+            return res.status(400).json({ success: false, message: "Paid person not added in the event yet" })
+        }
+
         const expense = new expenseModel({
             name,
             amount,
             event:event._id,
-            paidBy:user._id
+            paidBy:paidBy._id
         })
 
         const savedExpense = await expense.save()
@@ -49,7 +64,7 @@ const addExpense = async(req,res)=>{
             return res.status(500).json({ success: false, message: "Can't process your request at the moment" })
         }
 
-        return res.status(200).json({ success: false, message: "Expense saved successfully" })
+        return res.status(200).json({ success: true, message: "Expense saved successfully" })
     } catch (error) {
         return res.status(500).json({ success: false, message: "Internal Server Error" })
     }
@@ -90,7 +105,7 @@ const getAllExpense = async(req,res)=>{
 
         const expense = await expenseModel.find({event : _eventId})
 
-        return res.status(200).json({ success: false, data: expense })
+        return res.status(200).json({ success: true, data: expense })
     } catch (error) {
         return res.status(500).json({ success: false, message: "Internal Server Error" })
     }
@@ -129,7 +144,7 @@ const getOneExpense = async(req,res)=>{
             return res.status(400).json({ success: false, message: "Unauthorized access" })
         }
 
-        return res.status(200).json({ success: false, data: expense })
+        return res.status(200).json({ success: true, data: expense })
     } catch (error) {
         return res.status(500).json({ success: false, message: "Internal Server Error" })
     }
@@ -177,7 +192,7 @@ const updateExpense = async(req,res)=>{
             return res.status(500).json({ success: false, message: "Can't process your request at the moment" })
         }
 
-        return res.status(200).json({ success: false, message: "Expense updated successfully" })
+        return res.status(200).json({ success: true, message: "Expense updated successfully" })
 
     } catch (error) {
         return res.status(500).json({ success: false, message: "Internal Server Error" })
@@ -223,7 +238,7 @@ const deleteExpense = async(req,res)=>{
             return res.status(500).json({ success: false, message: "Can't process your request at the moment" })
         }
 
-        return res.status(200).json({ success: false, message: "Expense deleted successfully" })
+        return res.status(200).json({ success: true, message: "Expense deleted successfully" })
         
     } catch (error) {
         return res.status(500).json({ success: false, message: "Internal Server Error" })

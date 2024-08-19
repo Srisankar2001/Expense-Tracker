@@ -4,7 +4,7 @@ const eventModel = require('../models/eventModel')
 const expenseModel = require('../models/expenseModel')
 
 const createEvent = async (req, res) => {
-    const { _id, name, description} = req.body
+    const { _id, name, description } = req.body
 
     if (!_id || !name) {
         return res.status(400).json({ success: false, message: "Input all nessary data" })
@@ -62,7 +62,7 @@ const getAllEvent = async (req, res) => {
             return res.status(400).json({ success: false, message: "User Not Found" })
         }
 
-        return res.status(200).json({ success: true, message: user.events })
+        return res.status(200).json({ success: true, data: user.events })
 
     } catch (error) {
         return res.status(500).json({ success: false, message: "Internal Server Error" })
@@ -70,7 +70,7 @@ const getAllEvent = async (req, res) => {
 }
 
 const getOneEvent = async (req, res) => {
-    const { _id , _eventId} = req.body
+    const { _id, _eventId } = req.body
 
     if (!_id || !_eventId) {
         return res.status(400).json({ success: false, message: "Input all nessary data" })
@@ -83,10 +83,10 @@ const getOneEvent = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(_eventId)) {
         return res.status(400).json({ success: false, message: "Invalid event ID" });
     }
-   
+
     try {
         const user = await userModel.findById(_id)
-        const event = await eventModel.findById(_eventId)
+        const event = await eventModel.findById(_eventId).populate('members','_id name email')
 
         if (!user) {
             return res.status(400).json({ success: false, message: "User Not Found" })
@@ -96,11 +96,15 @@ const getOneEvent = async (req, res) => {
             return res.status(400).json({ success: false, message: "Event Not Found" })
         }
 
-        if (!event.members.includes(_id)) {
-            return res.status(400).json({ success: false, message: "Unauthorized Request" })
+        const isMember = event.members.some(member => member._id.toString() === user._id.toString());
+        if (!isMember) {
+            return res.status(400).json({ success: false, message: "Unauthorized Request" });
         }
 
-        return res.status(200).json({ success: true, message: event })
+
+        const expenses = await expenseModel.find({ event: _eventId }).populate('paidBy','_id name email')
+
+        return res.status(200).json({ success: true, data: { event, expenses } })
 
     } catch (error) {
         return res.status(500).json({ success: false, message: "Internal Server Error" })
@@ -160,7 +164,7 @@ const updateEvent = async (req, res) => {
 }
 
 const finishEvent = async (req, res) => {
-    const { _id, _eventId} = req.body
+    const { _id, _eventId } = req.body
 
     if (!_id || !_eventId) {
         return res.status(400).json({ success: false, message: "Input all nessary data" })
@@ -190,7 +194,7 @@ const finishEvent = async (req, res) => {
             return res.status(400).json({ success: false, message: "Unauthorized Request" })
         }
 
-        if(event.isFinished){
+        if (event.isFinished) {
             return res.status(400).json({ success: false, message: "Event is already finished" })
         }
 
@@ -209,7 +213,7 @@ const finishEvent = async (req, res) => {
 }
 
 const notFinishEvent = async (req, res) => {
-    const { _id, _eventId} = req.body
+    const { _id, _eventId } = req.body
 
     if (!_id || !_eventId) {
         return res.status(400).json({ success: false, message: "Input all nessary data" })
@@ -239,7 +243,7 @@ const notFinishEvent = async (req, res) => {
             return res.status(400).json({ success: false, message: "Unauthorized Request" })
         }
 
-        if(!event.isFinished){
+        if (!event.isFinished) {
             return res.status(400).json({ success: false, message: "Event is already not finished" })
         }
 
@@ -293,7 +297,7 @@ const addFriend = async (req, res) => {
             return res.status(400).json({ success: false, message: "No event avalible" })
         }
 
-        if(event.isFinished){
+        if (event.isFinished) {
             return res.status(400).json({ success: false, message: "Event is finished" })
         }
 
@@ -301,6 +305,11 @@ const addFriend = async (req, res) => {
 
         if (!isUserMember) {
             return res.status(400).json({ success: false, message: "Unauthorized access" })
+        }
+
+        const isFriend = user.friends.includes(friend._id)
+        if (!isFriend) {
+            return res.status(400).json({ success: false, message: "He is not in the friend list" })
         }
 
         const isFriendMember = event.members.includes(friend._id)
@@ -361,14 +370,19 @@ const removeFriend = async (req, res) => {
             return res.status(400).json({ success: false, message: "No event avalible" })
         }
 
-        if(event.isFinished){
+        if (event.isFinished) {
             return res.status(400).json({ success: false, message: "Event is finished" })
         }
 
         const isUserMember = event.members.includes(user._id)
-        
+
         if (!isUserMember) {
             return res.status(400).json({ success: false, message: "Unauthorized access" })
+        }
+
+        const isFriend = user.friends.includes(friend._id)
+        if (!isFriend) {
+            return res.status(400).json({ success: false, message: "He is not in the friend list" })
         }
 
         const isFriendMember = event.members.includes(friend._id)
@@ -377,8 +391,9 @@ const removeFriend = async (req, res) => {
             return res.status(400).json({ success: false, message: "Friend is already not in the event" })
         }
 
-        event.members = event.members.filter(item => item != friend._id)
-        friend.events = friend.events.filter(item => item != event._id)
+        event.members = event.members.filter(item => item.toString() !== friend._id.toString())
+        friend.events = friend.events.filter(item => item.toString() !== event._id.toString())
+        
         const updatedEvent = await event.save()
         const updatedFriend = await friend.save()
 
@@ -419,12 +434,12 @@ const deleteEvent = async (req, res) => {
             return res.status(400).json({ success: false, message: "Event Not Found" })
         }
 
-        if (!event.members.includes(_id)) {
-            return res.status(400).json({ success: false, message: "You're not allwed to do it" })
+        if (event.createdBy.toString() !== user._id.toString()) {
+            return res.status(403).json({ success: false, message: "You are not authorized to delete this event" });
         }
 
         const updateMemberPromises = event.members.map(async (member) => {
-            member.events = member.events.filter(eventItem => eventItem != _eventId);
+            member.events = member.events.filter(eventItem => eventItem.toString() !== _eventId.toString());
             await member.save();
         });
 
@@ -433,7 +448,7 @@ const deleteEvent = async (req, res) => {
         await expenseModel.deleteMany({ event: _eventId })
 
         const deletedEvent = await eventModel.findByIdAndDelete(_eventId)
-        
+
 
         if (!deletedEvent) {
             return res.status(500).json({ success: false, message: "Can't delete the event at the moment" })
@@ -447,7 +462,7 @@ const deleteEvent = async (req, res) => {
 }
 
 const budget = async (req, res) => {
-    const { _id, _eventId} = req.body
+    const { _id, _eventId } = req.body
 
     if (!_id || !_eventId) {
         return res.status(400).json({ success: false, message: "Input all nessary data" })
@@ -464,7 +479,7 @@ const budget = async (req, res) => {
     try {
         const user = await userModel.findById(_id)
         const event = await eventModel.findById(_eventId).populate('members')
-        const expenses = await expenseModel.find({event:_eventId})
+        const expenses = await expenseModel.find({ event: _eventId })
 
         if (!user) {
             return res.status(400).json({ success: false, message: "User Not Found" })
@@ -474,14 +489,14 @@ const budget = async (req, res) => {
             return res.status(400).json({ success: false, message: "Event Not Found" })
         }
 
-        if (!event.members.includes(_id)) {
-            return res.status(400).json({ success: false, message: "Unauthorized Request" })
+        const isUserMember = event.members.some(member => member._id.toString() === user._id.toString());
+        if (!isUserMember) {
+            return res.status(400).json({ success: false, message: "Unauthorized Request" });
         }
-
 
         let total = 0
         const userObj = {}
-       
+
         expenses.forEach((expense) => {
             total += expense.amount;
             if (userObj[expense.paidBy]) {
@@ -496,14 +511,19 @@ const budget = async (req, res) => {
         Object.keys(userObj).forEach((key) => {
             userObj[key] -= share;
         });
-        
-        const obj = {}
-        Object.keys(userObj).forEach(async (key) => {
-            let fullUser = await userModel.findById(key)
-            obj[key] = {name:fullUser.name,share:userObj[key]}
-        });
 
-        return res.status(200).json({ success: true, data : obj })
+        const obj = {}
+        // Object.keys(userObj).forEach(async (key) => {
+        //     let fullUser = await userModel.findById(key)
+        //     obj[key] = { name: fullUser.name, share: userObj[key] }
+        // });
+        await Promise.all(Object.keys(userObj).map(async (key) => {
+            let fullUser = await userModel.findById(key);
+            obj[key] = { name: fullUser.name, share: userObj[key] };
+        }));
+
+
+        return res.status(200).json({ success: true, data: obj })
 
     } catch (error) {
         return res.status(500).json({ success: false, message: "Internal Server Error" })

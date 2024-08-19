@@ -1,0 +1,80 @@
+/* General Styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+}
+
+/* Home Container */
+.home {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    background-color: #f0f2f5;
+    padding: 20px;
+    position: relative; /* Ensure relative positioning for the parent container */
+}
+
+/* Event Container */
+.home-event-div {
+    width: 80%;
+    max-width: 800px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+/* Individual Event */
+.home-event {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #e0f7fa;
+    transition: background-color 0.3s ease;
+}
+
+.home-event:hover {
+    background-color: #b2ebf2;
+}
+
+/* Event Title */
+.home-event h2 {
+    margin: 5px 0;
+    font-size: 1.5rem;
+    color: #007bff;
+}
+
+/* Event Date */
+.home-event h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #004d40;
+}
+
+/* No Events Available Message */
+span {
+    font-size: 1.2rem;
+    color: #757575;
+    text-align: center;
+    display: block;
+    margin-top: 20px;
+}
+
+/* Add Event Button */
+.home img {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.home img:hover {
+    transform: scale(1.1);
+}
