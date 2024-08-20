@@ -1,0 +1,117 @@
+/* General Styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+}
+
+/* Container for the New Friend Page */
+.newFriend {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Container for Friend List */
+.newFriend-newFriend-div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1000px;
+}
+
+/* Individual Friend Item */
+.newFriend-newFriend {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Friend Name and Email */
+.newFriend-newFriend div {
+    display: flex;
+    flex-direction: column;
+}
+
+.newFriend-newFriend h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #007bff;
+}
+
+.newFriend-newFriend h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: #555555;
+}
+
+/* Button Styles */
+.newFriend-newFriend button {
+    display: flex;
+    align-items: center;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.newFriend-add {
+    background-color: #4caf50; /* Green for add */
+}
+
+.newFriend-add img {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+.newFriend-add span {
+    font-size: 1rem;
+    display: block;
+}
+
+.newFriend-remove {
+    background-color: #d32f2f; /* Red for remove */
+}
+
+.newFriend-remove img {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+.newFriend-remove span {
+    font-size: 1rem;
+    display: block;
+}
+
+/* No Friends Available Message */
+.newFriend-noNewFriend {
+    font-size: 1.2rem;
+    color: #757575;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .newFriend-newFriend {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .newFriend-newFriend button {
+        margin-top: 10px;
+        width: 100%;
+    }
+}

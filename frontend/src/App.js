@@ -9,6 +9,8 @@ import { AppContext } from './Context/AppContext';
 import { NewEventPage } from './Components/NewEventPage/NewEventPage';
 import { Navbar } from './Components/Navbar/Navbar';
 import { EventPage } from './Components/EventPage/EventPage';
+import { NewExpensePage } from './Components/NewExpensePage/NewExpensePage';
+import { FriendPage } from './Components/FriendPage/FriendPage';
 
 function App() {
   const _id = useContext(AppContext)
@@ -22,6 +24,8 @@ function App() {
           {_id && <Route path='/' element={<HomePage/>}/>}
           {_id && <Route path='/createEvent' element={<NewEventPage/>}/>}
           {_id && <Route path='/getEvent' element={<EventPage/>}/>}
+          {_id && <Route path='/createExpense' element={<NewExpensePage/>}/>}
+          {_id && <Route path='/getFriend' element={<FriendPage/>}/>}
         </Routes>
         {_id && <Navbar/>}
       </Router>

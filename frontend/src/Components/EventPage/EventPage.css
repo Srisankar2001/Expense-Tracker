@@ -65,6 +65,7 @@ body, html {
 .expense-paidby-date {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 10px;
 }
 
 .expense-paidby-date h3 {
@@ -79,8 +80,58 @@ body, html {
     color: #007bff;
 }
 
+/* Edit and Delete Buttons */
+.expense-edit-delete {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* Button Styles */
+.expense-edit,
+.expense-delete {
+    display: flex;
+    align-items: center;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+    font-size: 1rem;
+    background-color: transparent;
+}
+
+.expense-edit {
+    background-color: #4caf50; /* Green background for edit */
+}
+
+.expense-edit img {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+.expense-delete {
+    background-color: #d32f2f; /* Red background for delete */
+}
+
+.expense-delete img {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+.expense-edit span,
+.expense-delete span{
+    font-size: 1.2rem;
+    color: white;
+    text-align: center;
+    display: block;
+}
+
 /* No Expenses Available Message */
-span {
+.event-noExpense {
     font-size: 1.2rem;
     color: #757575;
     text-align: center;
@@ -89,7 +140,7 @@ span {
 }
 
 /* Add Event Button */
-.event img {
+.event .add-expense-btn {
     position: absolute;
     bottom: 20px;
     right: 20px;
@@ -99,6 +150,6 @@ span {
     transition: transform 0.3s ease;
 }
 
-.event img:hover {
+.event .add-expense-btn:hover {
     transform: scale(1.1);
 }

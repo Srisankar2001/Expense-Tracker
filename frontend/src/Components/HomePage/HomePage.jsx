@@ -31,7 +31,7 @@ export const HomePage = () => {
     const renderEvent = () => {
         if (!events || events.length === 0) {
             return (
-                <span>No Events Available</span>
+                <span className='home-noEvent'>No Events Available</span>
             )
         } else {
             return events.map((item, index) => {

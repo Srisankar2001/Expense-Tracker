@@ -15,9 +15,9 @@ body, html {
 }
 
 /* Form and Inputs */
-.newExpense form {
+form {
     width: 100%;
-    max-width: 400px; /* Increased width */
+    max-width: 400px; /* Width of the form */
     background-color: #fff;
     padding: 30px;
     border-radius: 8px;
@@ -26,7 +26,7 @@ body, html {
     flex-direction: column;
 }
 
-.newExpense form h1 {
+form h1 {
     font-size: 2rem;
     color: #333;
     margin-bottom: 20px;
@@ -67,7 +67,12 @@ body, html {
     border-color: #007bff;
 }
 
-.newExpense h3 {
+.newExpense-input select {
+    background-color: #fff; /* Background color for the dropdown */
+    cursor: pointer;
+}
+
+.newExpense-input h3 {
     color: red;
     font-size: 0.875rem;
     margin-top: 8px;
@@ -93,24 +98,24 @@ body, html {
 }
 
 .newExpense-buttons input[type="submit"] {
-    background-color: #007bff;
+    background-color: #007bff; /* Primary button color */
 }
 
 .newExpense-buttons input[type="reset"] {
-    background-color: #6c757d;
+    background-color: #6c757d; /* Secondary button color */
 }
 
 .newExpense-buttons input[type="submit"]:hover {
-    background-color: #0056b3;
+    background-color: #0056b3; /* Darker shade on hover */
 }
 
 .newExpense-buttons input[type="reset"]:hover {
-    background-color: #5a6268;
+    background-color: #5a6268; /* Darker shade on hover */
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .newExpense form {
+    form {
         max-width: 100%;
         padding: 20px;
     }

@@ -9,7 +9,7 @@ export const Navbar = () => {
     <div className='navbar'>
         <ul>
             <Link to="/"><li><img src={home}/><span>Home</span></li></Link>
-            <Link to="/friends"><li><img src={friends}/><span>Friends</span></li></Link>
+            <Link to="/getFriend"><li><img src={friends}/><span>Friends</span></li></Link>
         </ul>
     </div>
   )

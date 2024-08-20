@@ -56,7 +56,7 @@ body, html {
 }
 
 /* No Events Available Message */
-span {
+.home-noEvent {
     font-size: 1.2rem;
     color: #757575;
     text-align: center;

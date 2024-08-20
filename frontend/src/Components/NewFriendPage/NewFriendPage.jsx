@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
-import "./FriendPage.css"
+import "./NewFriendPage.css"
 import { AppContext } from '../../Context/AppContext'
 import axiosInstance from '../../Config/AxiosConfig'
 import { Link, useNavigate } from 'react-router-dom'
-import plus from "../../Assets/plus.png"
+
 import remove from "../../Assets/remove.png"
-export const FriendPage = () => {
+import add from "../../Assets/add.png"
+
+export const NewFriendPage = () => {
     const navigate = useNavigate()
     const _id = useContext(AppContext)
     const [friends, setFriends] = useState([])
@@ -16,7 +18,7 @@ export const FriendPage = () => {
         const fetchData = async () => {
             try {
                 const postData = { _id }
-                const response = await axiosInstance.post("/user/allFriend", postData)
+                const response = await axiosInstance.post("/user/all", postData)
                 console.log(response)
                 if (response.data.success) {
                     setFriends(response.data.data)
@@ -32,31 +34,29 @@ export const FriendPage = () => {
     const renderFriend = () => {
         if (!friends || friends.length === 0) {
             return (
-                <span className='friend-nofriend'>No Friends Available</span>
+                <span className='newFriend-noNewFriend'>No Friends Available</span>
             )
         } else {
             return friends.map((item, index) => {
                 return (
-                    <div key={index} className="friend-friend">
+                    <div key={index} className="newFriend-newFriend">
                         <div>
                             <h2>{item.name}</h2>
                             <h3>{item.email}</h3>
                         </div>
-                        <button><img src={remove} /><span>Unfriend</span></button>
+                        {item.isFriend ?
+                            <button className='newFriend-remove'><img src={remove} /><span>UnFriend</span></button>
+                            :
+                            <button className='newFriend-add'><img src={add} /><span>AddFriend</span></button>}
                     </div>
                 )
             })
         }
     }
     return (
-        < div className='friend' >
-            <div className='friend-friend-div'>
+        < div className='newFriend' >
+            <div className='newFriend-newFriend-div'>
                 {renderFriend()}
-            </div>
-            <div>
-                <Link to="/addFriend">
-                    <img src={plus} alt="Add Friend" className="add-friend-btn" />
-                </Link>
             </div>
         </div >
     )

@@ -70,6 +70,36 @@ const getAllFriends = async (req, res) => {
     }
 }
 
+const getAll = async (req, res) => {
+    const { _id } = req.body
+
+    if (!_id) {
+        return res.status(400).json({ success: false, message: "Input nessary data" })
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+        return res.status(400).json({ success: false, message: "Invalid user ID" });
+    }
+
+    try {
+        const user = await userModel.findById(_id)
+
+        if (!user) {
+            return res.status(400).json({ success: false, message: "User Not Found" })
+        }
+
+        const allUsers = await userModel.find({ _id: { $ne: user._id } }, { password: 0 })
+
+        // const data = []
+        // allUsers.map(item => user.friends.includes(item._id) ? data.push({...item,isFriend:true}) : data.push({...item,isFriend:false}))
+        const data = allUsers.map(item => ({ ...item.toObject(), isFriend: user.friends.includes(item._id) }));
+
+        return res.status(200).json({ success: true, data: data })
+    } catch (error) {
+        return res.status(500).json({ success: false, message: "Internal Server Error" })
+    }
+}
+
 const removeFriend = async (req, res) => {
     const { _id, _friendId } = req.body
 
@@ -126,7 +156,8 @@ const removeFriend = async (req, res) => {
 const userController = {
     addFriend,
     removeFriend,
-    getAllFriends
+    getAllFriends,
+    getAll
 }
 
 module.exports = userController

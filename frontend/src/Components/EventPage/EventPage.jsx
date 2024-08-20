@@ -4,6 +4,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { AppContext } from '../../Context/AppContext'
 import axiosInstance from '../../Config/AxiosConfig'
 import plus from "../../Assets/plus.png"
+import bin from "../../Assets/delete.png"
+import edit from "../../Assets/edit.png"
 
 export const EventPage = () => {
     const navigate = useNavigate()
@@ -37,7 +39,7 @@ export const EventPage = () => {
     const renderExpense = () => {
         if (!expenses || expenses.length === 0) {
             return (
-                <span>No Expenses Available</span>
+                <span className='event-noExpense'>No Expenses Available</span>
             )
         } else {
             return expenses.map((item, index) => {
@@ -51,6 +53,14 @@ export const EventPage = () => {
                             <h3>{item.paidBy.name}</h3>
                             <h4>{item.createdAt.split('T')[0]}</h4>
                         </div>
+                        <div className='expense-edit-delete'>
+                            <button className='expense-edit'>
+                                <img src={edit} alt='Edit'/><span>Edit</span>
+                            </button>
+                            <button className='expense-delete'>
+                                <img src={bin} alt='Delete'/><span>Delete</span>
+                            </button>
+                        </div>
                     </div>
                 )
             })
@@ -62,8 +72,8 @@ export const EventPage = () => {
             <div className='event-expense-div'>
                 {renderExpense()}
             </div>
-            <div>
-                <Link to="/"><img src={plus} alt="Add Event" /></Link>
+            <div  onClick={() => navigate("/createExpense", { state: { _eventId: _eventId } })}>
+                <img src={plus} alt="Add Expense" className="add-expense-btn" />
             </div>
         </div>
     )
