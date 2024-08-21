@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import "./EventPage.css"
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { AppContext } from '../../Context/AppContext'
 import axiosInstance from '../../Config/AxiosConfig'
 import plus from "../../Assets/plus.png"
+import manage from "../../Assets/manage.png"
 import bin from "../../Assets/delete.png"
 import edit from "../../Assets/edit.png"
 
@@ -34,7 +35,7 @@ export const EventPage = () => {
             }
         }
         fetchData()
-    }, [_id, _eventId])
+    }, [_id, _eventId,navigate])
     
     const renderExpense = () => {
         if (!expenses || expenses.length === 0) {
@@ -54,10 +55,10 @@ export const EventPage = () => {
                             <h4>{item.createdAt.split('T')[0]}</h4>
                         </div>
                         <div className='expense-edit-delete'>
-                            <button className='expense-edit'>
+                            <button className='expense-edit' onClick={()=>navigate("/editExpense", { state: { _eventId: _eventId, _expenseId: item._id} })}>
                                 <img src={edit} alt='Edit'/><span>Edit</span>
                             </button>
-                            <button className='expense-delete'>
+                            <button className='expense-delete' onClick={()=>handleDeleteExpense(item._id)}>
                                 <img src={bin} alt='Delete'/><span>Delete</span>
                             </button>
                         </div>
@@ -66,11 +67,30 @@ export const EventPage = () => {
             })
         }
     }
-    
+    const handleDeleteExpense = (_expenseId) => {
+        const postData = async () => {
+            try {
+                const postData = { _id,_expenseId }
+                const response = await axiosInstance.post("/expense/delete", postData)
+                if (response.data.success) {
+                    alert(response.data.message)
+                    window.location.reload()
+                } else {
+                    alert(response.data.message)
+                }
+            } catch (error) {
+                alert(error.response?.data?.message || "Internal Server Error")
+            }
+        }
+        postData()
+    }
     return (
         <div className='event'>
             <div className='event-expense-div'>
                 {renderExpense()}
+            </div>
+            <div  onClick={() => navigate("/manage", { state: { _eventId: _eventId } })}>
+                <img src={manage} alt="Manage Member" className="manage-member-btn" />
             </div>
             <div  onClick={() => navigate("/createExpense", { state: { _eventId: _eventId } })}>
                 <img src={plus} alt="Add Expense" className="add-expense-btn" />

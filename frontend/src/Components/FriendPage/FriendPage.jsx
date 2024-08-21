@@ -17,7 +17,6 @@ export const FriendPage = () => {
             try {
                 const postData = { _id }
                 const response = await axiosInstance.post("/user/allFriend", postData)
-                console.log(response)
                 if (response.data.success) {
                     setFriends(response.data.data)
                 } else {
@@ -42,11 +41,28 @@ export const FriendPage = () => {
                             <h2>{item.name}</h2>
                             <h3>{item.email}</h3>
                         </div>
-                        <button><img src={remove} /><span>Unfriend</span></button>
+                        <button onClick={()=> handleRemoveFriend(item._id)}><img src={remove} /><span>Unfriend</span></button>
                     </div>
                 )
             })
         }
+    }
+    const handleRemoveFriend = async(_friendId) => {
+        const postData = async () => {
+            try {
+                const postData = { _id,_friendId }
+                const response = await axiosInstance.post("/user/remove", postData)
+                if (response.data.success) {
+                    alert(response.data.message)
+                    window.location.reload()
+                } else {
+                    alert(response.data.message)
+                }
+            } catch (error) {
+                alert(error.response?.data?.message || "Internal Server Error")
+            }
+        }
+        postData()
     }
     return (
         < div className='friend' >
@@ -54,7 +70,7 @@ export const FriendPage = () => {
                 {renderFriend()}
             </div>
             <div>
-                <Link to="/addFriend">
+                <Link to="/allFriend">
                     <img src={plus} alt="Add Friend" className="add-friend-btn" />
                 </Link>
             </div>

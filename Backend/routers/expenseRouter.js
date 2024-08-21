@@ -9,6 +9,6 @@ router.post('/getAll',verify,getAllExpense)
 
 router.put('/update',verify,updateExpense)
 
-router.delete('/delete',verify,deleteExpense)
+router.post('/delete',verify,deleteExpense)
 
 module.exports = router

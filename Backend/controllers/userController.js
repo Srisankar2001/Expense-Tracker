@@ -2,9 +2,9 @@ const mongoose = require('mongoose')
 const userModel = require('../models/userModel')
 
 const addFriend = async (req, res) => {
-    const { _id, email } = req.body
+    const { _id, _friendId } = req.body
 
-    if (!_id || !email) {
+    if (!_id || !_friendId ) {
         return res.status(400).json({ success: false, message: "Input nessary data" })
     }
 
@@ -12,9 +12,13 @@ const addFriend = async (req, res) => {
         return res.status(400).json({ success: false, message: "Invalid user ID" });
     }
 
+    if (!mongoose.Types.ObjectId.isValid(_friendId)) {
+        return res.status(400).json({ success: false, message: "Invalid friend ID" });
+    }
+
     try {
         const user = await userModel.findById(_id)
-        const friend = await userModel.findOne({ email })
+        const friend = await userModel.findById(_friendId)
 
         if (!user) {
             return res.status(400).json({ success: false, message: "User Not Found" })

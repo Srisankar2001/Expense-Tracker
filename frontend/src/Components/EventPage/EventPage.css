@@ -139,10 +139,10 @@ body, html {
     margin-top: 20px;
 }
 
-/* Add Event Button */
+/* Add Expense Button */
 .event .add-expense-btn {
     position: absolute;
-    bottom: 20px;
+    bottom: 50px;
     right: 20px;
     width: 50px;
     height: 50px;
@@ -151,5 +151,20 @@ body, html {
 }
 
 .event .add-expense-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Manage Member Button */
+.event .manage-member-btn {
+    position: absolute;
+    bottom: 110px; /* Aligns the manage button just above the add expense button */
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.event .manage-member-btn:hover {
     transform: scale(1.1);
 }

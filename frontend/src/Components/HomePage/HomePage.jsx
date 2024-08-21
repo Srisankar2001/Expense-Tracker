@@ -4,6 +4,10 @@ import { AppContext } from '../../Context/AppContext'
 import axiosInstance from '../../Config/AxiosConfig'
 import { Link, useNavigate } from 'react-router-dom'
 import plus from "../../Assets/plus.png"
+
+import edit from "../../Assets/edit.png"
+import bin from "../../Assets/delete.png"
+
 export const HomePage = () => {
     const navigate = useNavigate()
     const _id = useContext(AppContext)
@@ -16,7 +20,6 @@ export const HomePage = () => {
             try {
                 const postData = { _id }
                 const response = await axiosInstance.post("/event/getAll", postData)
-                console.log(response)
                 if (response.data.success) {
                     setEvents(response.data.data)
                 } else {
@@ -36,10 +39,21 @@ export const HomePage = () => {
         } else {
             return events.map((item, index) => {
                 return (
-                        <div key={index} className="home-event"  onClick={() => navigate("/getEvent", { state: { _eventId: item._id } })}>
-                            <h3>{item.date}</h3>
+                    <div key={index} className={item.isFinished ? 'home-event-finished' : 'home-event'} onClick={() => navigate("/getEvent", { state: { _eventId: item._id } })}>
+                        <div className='home-event-detail'>
+                            <h3>{item.createdAt.split('T')[0]}</h3>
                             <h2>{item.name}</h2>
                         </div>
+                        <div className='home-event-btn'>
+                            <button className='home-btn-edit'><img src={edit} alt='Edit' /><span>Edit</span></button>
+                            <button className='home-btn-delete'><img src={bin} alt='Delete' /><span>Delete</span></button>
+                            {item.isFinished ?
+                                <button className='home-btn-notFinish'><span>Not Finish</span></button>
+                                :
+                                <button className='home-btn-finish'><span>Finished</span></button>
+                            }
+                        </div>
+                    </div>
                 )
             })
         }
@@ -50,7 +64,7 @@ export const HomePage = () => {
                 {renderEvent()}
             </div>
             <div>
-                <Link to="/createEvent"><img src={plus} /></Link>
+                <Link to="/createEvent"><img src={plus} className='home-addEvent'/></Link>
             </div>
         </div >
     )

@@ -112,9 +112,9 @@ const getAllExpense = async(req,res)=>{
 }
 
 const getOneExpense = async(req,res)=>{
-    const { _id,_expenseId} = req.body
+    const { _id,_expenseId,_eventId} = req.body
 
-    if (!_id || !_expenseId) {
+    if (!_id || !_expenseId || !_eventId) {
         return res.status(400).json({ success: false, message: "Input nessary data" })
     }
 
@@ -126,9 +126,14 @@ const getOneExpense = async(req,res)=>{
         return res.status(400).json({ success: false, message: "Invalid expense ID" });
     }
 
+    if (!mongoose.Types.ObjectId.isValid(_eventId)) {
+        return res.status(400).json({ success: false, message: "Invalid event ID" });
+    }
+
     try {
         const user = await userModel.findById(_id)
         const expense = await expenseModel.findById(_expenseId)
+        const event = await eventModel.findById(_eventId)
 
         if (!user) {
             return res.status(400).json({ success: false, message: "User Not Found" })
@@ -136,6 +141,10 @@ const getOneExpense = async(req,res)=>{
 
         if (!expense) {
             return res.status(400).json({ success: false, message: "No expense avalible" })
+        }
+
+        if (!event) {
+            return res.status(400).json({ success: false, message: "No event avalible" })
         }
 
         const isUserMember = event.members.includes(user._id)

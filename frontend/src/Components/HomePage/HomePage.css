@@ -15,66 +15,151 @@ body, html {
     min-height: 80vh;
     background-color: #f0f2f5;
     padding: 20px;
-    position: relative; /* Ensure relative positioning for the parent container */
 }
 
 /* Event Container */
 .home-event-div {
-    width: 80%;
+    width: 100%;
     max-width: 800px;
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 30px;
+    padding: 20px;
 }
 
 /* Individual Event */
-.home-event {
+.home-event, .home-event-finished {
     margin-bottom: 20px;
     padding: 15px;
     border-radius: 8px;
     background-color: #e0f7fa;
     transition: background-color 0.3s ease;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
-.home-event:hover {
+.home-event-finished {
+    background-color: #e6e6e6;
+}
+
+.home-event:hover, .home-event-finished:hover {
     background-color: #b2ebf2;
 }
 
-/* Event Title */
+/* Event Details */
+.home-event-detail {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
 .home-event h2 {
     margin: 5px 0;
     font-size: 1.5rem;
     color: #007bff;
 }
 
-/* Event Date */
 .home-event h3 {
-    margin: 0;
+    margin: 5px 0;
     font-size: 1.2rem;
     color: #004d40;
 }
 
-/* No Events Available Message */
-.home-noEvent {
-    font-size: 1.2rem;
-    color: #757575;
-    text-align: center;
-    display: block;
-    margin-top: 20px;
+/* Event Buttons */
+.home-event-btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.home-event-btn button {
+    flex: 1;
+    margin: 5px;
+    padding: 4px 8px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    min-width: 100px; /* Ensure minimum width for consistency */
+    max-height: 55px;
+}
+
+/* Button Styles */
+.home-btn-edit {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.home-btn-edit:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+.home-btn-delete {
+    background-color: #f44336;
+    color: white;
+}
+
+.home-btn-delete:hover {
+    background-color: #e53935;
+    transform: scale(1.05);
+}
+
+.home-btn-finish {
+    background-color: #008CBA;
+    color: white;
+}
+
+.home-btn-finish:hover {
+    background-color: #007bb5;
+    transform: scale(1.05);
+}
+
+.home-btn-notFinish {
+    background-color: #FFC107;
+    color: white;
+}
+
+.home-btn-notFinish:hover {
+    background-color: #FFB300;
+    transform: scale(1.05);
 }
 
 /* Add Event Button */
-.home img {
-    position: absolute;
-    bottom: 20px;
+.home-addEvent {
+    position: fixed;
+    bottom: 80px;
     right: 20px;
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     cursor: pointer;
     transition: transform 0.3s ease;
 }
 
-.home img:hover {
+.home-addEvent:hover {
     transform: scale(1.1);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .home-event, .home-event-finished {
+        flex-direction: column;
+    }
+    .home-event-detail {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .home-event-btn {
+        align-items: stretch; /* Ensure buttons fill the width */
+    }
+    .home-event-btn button {
+        width: 100%; /* Make buttons fill the container width */
+        margin: 5px 10px; /* Space between buttons */
+    }
 }
