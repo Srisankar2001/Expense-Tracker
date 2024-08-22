@@ -32,20 +32,27 @@ body, html {
     margin-bottom: 20px;
     padding: 15px;
     border-radius: 8px;
-    background-color: #e0f7fa;
     transition: background-color 0.3s ease;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
+.home-event{
+    background-color: #e0f7fa;
+}
 .home-event-finished {
     background-color: #e6e6e6;
 }
 
-.home-event:hover, .home-event-finished:hover {
+.home-event:hover {
     background-color: #b2ebf2;
 }
+
+.home-event-finished:hover {
+    background-color: #d1d1d1; 
+}
+
 
 /* Event Details */
 .home-event-detail {
@@ -54,17 +61,20 @@ body, html {
     flex-direction: column;
 }
 
-.home-event h2 {
+
+/* Event Details for finished events */
+.home-event-finished h2, .home-event h2 {
     margin: 5px 0;
     font-size: 1.5rem;
     color: #007bff;
 }
 
-.home-event h3 {
+.home-event-finished h3, .home-event h3 {
     margin: 5px 0;
     font-size: 1.2rem;
     color: #004d40;
 }
+
 
 /* Event Buttons */
 .home-event-btn {
@@ -88,6 +98,12 @@ body, html {
     transition: background-color 0.3s ease, transform 0.2s ease;
     min-width: 100px; /* Ensure minimum width for consistency */
     max-height: 55px;
+}
+
+.home-event-btn img{
+    height: 25px;
+    width: 25px;
+    margin-right: 5px;
 }
 
 /* Button Styles */
@@ -134,10 +150,10 @@ body, html {
 /* Add Event Button */
 .home-addEvent {
     position: fixed;
-    bottom: 80px;
+    bottom: 100px;
     right: 20px;
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     cursor: pointer;
     transition: transform 0.3s ease;
 }

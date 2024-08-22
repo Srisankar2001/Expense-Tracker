@@ -99,8 +99,8 @@ body, html {
 
 /* Add Friend Button */
 .friend .add-friend-btn {
-    position: absolute;
-    bottom: 20px;
+    position: fixed;
+    bottom: 100px;
     right: 20px;
     width: 50px;
     height: 50px;

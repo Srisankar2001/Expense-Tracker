@@ -1,0 +1,71 @@
+/* General Styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+}
+
+/* Container for the Budget Page */
+.budget {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    position: relative;
+    padding: 20px;
+}
+
+/* Container for Budget List */
+.budget-budget-div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1000px;
+}
+
+/* Individual Budget Item */
+.budget-budget {
+    display: flex;
+    align-items: center; /* Center align the content */
+    justify-content: space-between;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Center text for consistency */
+}
+
+/* Budget Name */
+.budget-budget h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #007bff;
+}
+
+/* Budget Share Amount */
+.budget-budget h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+/* Positive Amount */
+.budget-positive {
+    color: #4caf50; /* Green color for positive amounts */
+}
+
+/* Negative Amount */
+.budget-negative {
+    color: #d32f2f; /* Red color for negative amounts */
+}
+
+/* No Budget Available Message */
+.budget-nobudget {
+    font-size: 1.2rem;
+    color: #757575;
+    text-align: center;
+    margin-top: 20px;
+}
+

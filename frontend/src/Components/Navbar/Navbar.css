@@ -1,3 +1,4 @@
+/* Navbar Container */
 .navbar {
     position: fixed;
     bottom: 0;
@@ -7,37 +8,57 @@
     display: flex;
     justify-content: center;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000; /* Ensure the navbar stays on top of other elements */
 }
 
+/* Navbar List */
 .navbar ul {
     list-style-type: none;
     display: flex;
     margin: 0;
     padding: 0;
-    gap: 50px; /* Space between each item */
+    gap: 30px; /* Adjust spacing between items */
 }
 
+/* Navbar List Items */
 .navbar li {
     display: flex;
     flex-direction: column;
     align-items: center;
     color: white;
-    font-size: 14px;
+    font-size: 16px; /* Increased font size for better readability */
     cursor: pointer;
-    transition: color 0.3s;
+    transition: color 0.3s, transform 0.3s; /* Added transition for scale effect */
+}
+/* Navbar List Items */
+.navbar ul a {
+    text-decoration: none; /* Remove underline in all states */
+    color: inherit; /* Inherit color from the parent ul */
 }
 
+/* Ensure that link states do not add text decoration */
+.navbar ul a:active,
+.navbar ul a:hover,
+.navbar ul a:visited,
+.navbar ul a:focus {
+    text-decoration: none; /* Maintain no underline in all states */
+}
+/* Navbar Icons */
 .navbar li img {
-    width: 32px;
-    height: 32px;
-    margin-bottom: 1px;
+    width: 30px; /* Adjusted size for better fit */
+    height: 30px;
+    margin-bottom: 5px; /* Adjusted spacing */
 }
 
+/* Navbar Text */
 .navbar li span {
     font-size: 14px;
     font-weight: bold;
 }
 
+/* Hover Effect */
 .navbar li:hover {
-    color: #ffcc00; /* Change color on hover */
+    color: #ffcc00; /* Change text color on hover */
+    transform: scale(1.1); /* Slightly enlarge item on hover */
 }
+

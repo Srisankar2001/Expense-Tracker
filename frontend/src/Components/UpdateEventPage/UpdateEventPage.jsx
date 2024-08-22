@@ -1,35 +1,36 @@
 import React, { useContext, useEffect, useState } from 'react'
-import './UpdateExpensePage.css'
+import './UpdateEventPage.css'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { AppContext } from '../../Context/AppContext'
+import { EventValidation } from '../../Functions/EventValidation'
 import axiosInstance from '../../Config/AxiosConfig'
-import { UpdateExpenseValidation } from '../../Functions/UpdateExpenseValidation'
 
-export const UpdateExpensePage = () => {
+export const UpdateEventPage = () => {
     const navigate = useNavigate()
     const location = useLocation()
-    const { _expenseId, _eventId } = location.state || {}
+    const { _eventId } = location.state || {}
     const _id = useContext(AppContext)
     const [input, setInput] = useState({
         name: "",
-        amount: ""
+        description: ""
     })
     const [error, setError] = useState({
         name: "",
-        amount: ""
+        description: ""
     })
     useEffect(() => {
-        if (!_id || !_expenseId || !_eventId) {
+        if (!_id || !_eventId) {
             navigate("/")
         }
         const fetchData = async () => {
             try {
-                const postData = { _id, _expenseId, _eventId }
-                const response = await axiosInstance.post("/expense/getOne", postData)
+                const postData = { _id,_eventId }
+                const response = await axiosInstance.post("/event/getOne", postData)
+                console.log(response.data)
                 if (response.data.success) {
                     setInput({
-                        name: response.data.data.name,
-                        amount: response.data.data.amount
+                        name: response.data.data.event.name,
+                        description: response.data.data.event.description
                     })
                 } else {
                     alert(response.data.message)
@@ -39,7 +40,7 @@ export const UpdateExpensePage = () => {
             }
         }
         fetchData()
-    }, [_id, _expenseId, navigate])
+    }, [_id,_eventId,navigate])
     const handleChange = (e) => {
         setInput(prev => ({
             ...prev,
@@ -47,25 +48,24 @@ export const UpdateExpensePage = () => {
         }))
     }
     const handleReset = () => {
-        // navigate("/editExpense", { state: { _eventId: _eventId, _expenseId: _expenseId} })
         window.location.reload()
     }
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const errors = UpdateExpenseValidation(input)
+        const errors = EventValidation(input)
         setError(errors)
         if (Object.values(errors).every(item => item === "")) {
             try {
                 const postData = {
                     _id,
-                    _expenseId,
+                    _eventId,
                     name: input.name.trim(),
-                    amount: input.amount.trim()
+                    description: input.description.trim()
                 }
-                const response = await axiosInstance.put("/expense/update", postData)
+                const response = await axiosInstance.put("/event/update", postData)
                 if (response.data.success) {
                     alert(response.data.message)
-                    navigate("/getEvent", { state: { _eventId: _eventId } })
+                    navigate("/")
                 } else {
                     alert(response.data.message)
                 }
@@ -75,22 +75,22 @@ export const UpdateExpensePage = () => {
         }
     }
     return (
-        <div className='updateExpense'>
+        <div className='updateEvent'>
             <form onSubmit={handleSubmit} onReset={handleReset}>
-                <h1>Update Expense</h1>
-                <div className='updateExpense-inputs'>
-                    <div className='updateExpense-input'>
+                <h1>Update Event</h1>
+                <div className='updateEvent-inputs'>
+                    <div className='updateEvent-input'>
                         <label>Name</label>
-                        <input type='text' name='name' value={input.name} placeholder='Enter Expense Name' onChange={handleChange} />
+                        <input type='text' name='name' value={input.name} placeholder='Enter Event Name' onChange={handleChange} />
                         {error.name && <h3>{error.name}</h3>}
                     </div>
-                    <div className='updateExpense-input'>
-                        <label>Amount</label>
-                        <input type='number' name='amount' value={input.amount} placeholder='Enter Expense Amount' onChange={handleChange} />
-                        {error.amount && <h3>{error.amount}</h3>}
+                    <div className='updateEvent-input'>
+                        <label>Description</label>
+                        <input type='text' name='description' value={input.description} placeholder='Enter Event Description' onChange={handleChange} />
+                        {error.description && <h3>{error.description}</h3>}
                     </div>
                 </div>
-                <div className='updateExpense-buttons'>
+                <div className='updateEvent-buttons'>
                     <input type='submit' value='Submit' />
                     <input type='reset' value='Clear' />
                 </div>

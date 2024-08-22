@@ -123,7 +123,7 @@ body, html {
 }
 
 .expense-edit span,
-.expense-delete span{
+.expense-delete span {
     font-size: 1.2rem;
     color: white;
     text-align: center;
@@ -140,9 +140,9 @@ body, html {
 }
 
 /* Add Expense Button */
-.event .add-expense-btn {
-    position: absolute;
-    bottom: 50px;
+.add-expense-btn {
+    position: fixed;
+    bottom: 80px;
     right: 20px;
     width: 50px;
     height: 50px;
@@ -150,14 +150,14 @@ body, html {
     transition: transform 0.3s ease;
 }
 
-.event .add-expense-btn:hover {
+.add-expense-btn:hover {
     transform: scale(1.1);
 }
 
 /* Manage Member Button */
-.event .manage-member-btn {
-    position: absolute;
-    bottom: 110px; /* Aligns the manage button just above the add expense button */
+.manage-member-btn {
+    position: fixed;
+    bottom: 140px; /* Aligns the manage button just above the add expense button */
     right: 20px;
     width: 50px;
     height: 50px;
@@ -165,6 +165,21 @@ body, html {
     transition: transform 0.3s ease;
 }
 
-.event .manage-member-btn:hover {
+.manage-member-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Budget Button */
+.budget-btn {
+    position: fixed;
+    bottom: 200px; /* Aligns the budget button just above the manage member button */
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.budget-btn:hover {
     transform: scale(1.1);
 }

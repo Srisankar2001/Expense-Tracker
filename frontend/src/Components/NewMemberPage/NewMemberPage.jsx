@@ -20,7 +20,6 @@ export const NewMemberPage = () => {
             try {
                 const postData = { _id, _eventId }
                 const response = await axiosInstance.post("/event/getOne", postData)
-                console.log(response.data.data.event.members)
                 if (response.data.success) {
                     setMembers(response.data.data.event.members)
                 } else {
@@ -62,12 +61,12 @@ export const NewMemberPage = () => {
                         </div>
                         <div className='newMember-friend-btn'>
                             {members.some(memberItem => memberItem._id === item._id) ?
-                                <button className='newMember-friend-btn-remove'>
+                                <button className='newMember-friend-btn-remove' onClick={()=>handleRemoveFriend(item._id)}>
                                     <img src={remove} alt='Remove Member' />
                                     <span>Remove Member</span>
                                 </button>
                                 :
-                                <button className='newMember-friend-btn-add'>
+                                <button className='newMember-friend-btn-add' onClick={()=>handleAddFriend(item._id)}>
                                     <img src={add} alt='Add Member' />
                                     <span>Add Member</span>
                                 </button>
@@ -77,6 +76,42 @@ export const NewMemberPage = () => {
                 );
             }
         })
+    }
+
+    const handleAddFriend = (_friendId) => {
+        const postData = async () => {
+            try {
+                const postData = { _id,_friendId,_eventId }
+                const response = await axiosInstance.put("/event/addFriend", postData)
+                if (response.data.success) {
+                    alert(response.data.message)
+                    window.location.reload()
+                } else {
+                    alert(response.data.message)
+                }
+            } catch (error) {
+                alert(error.response?.data?.message || "Internal Server Error")
+            }
+        }
+        postData()
+    }
+
+    const handleRemoveFriend = (_friendId) => {
+        const postData = async () => {
+            try {
+                const postData = { _id,_friendId,_eventId }
+                const response = await axiosInstance.put("/event/removeFriend", postData)
+                if (response.data.success) {
+                    alert(response.data.message)
+                    window.location.reload()
+                } else {
+                    alert(response.data.message)
+                }
+            } catch (error) {
+                alert(error.response?.data?.message || "Internal Server Error")
+            }
+        }
+        postData()
     }
 
     return (

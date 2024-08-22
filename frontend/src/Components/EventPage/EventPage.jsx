@@ -5,9 +5,9 @@ import { AppContext } from '../../Context/AppContext'
 import axiosInstance from '../../Config/AxiosConfig'
 import plus from "../../Assets/plus.png"
 import manage from "../../Assets/manage.png"
+import budget from "../../Assets/budget.png"
 import bin from "../../Assets/delete.png"
 import edit from "../../Assets/edit.png"
-
 export const EventPage = () => {
     const navigate = useNavigate()
     const location = useLocation()
@@ -88,6 +88,9 @@ export const EventPage = () => {
         <div className='event'>
             <div className='event-expense-div'>
                 {renderExpense()}
+            </div>
+            <div  onClick={() => navigate("/budget", { state: { _eventId: _eventId } })}>
+                <img src={budget} alt="Budget" className="budget-btn" />
             </div>
             <div  onClick={() => navigate("/manage", { state: { _eventId: _eventId } })}>
                 <img src={manage} alt="Manage Member" className="manage-member-btn" />

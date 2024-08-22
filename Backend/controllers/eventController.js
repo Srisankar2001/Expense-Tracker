@@ -138,8 +138,11 @@ const updateEvent = async (req, res) => {
             return res.status(400).json({ success: false, message: "Event Not Found" })
         }
 
-        if (!event.members.includes(_id)) {
-            return res.status(400).json({ success: false, message: "Unauthorized Request" })
+        // if (!event.members.includes(_id)) {
+        //     return res.status(400).json({ success: false, message: "Unauthorized Request" })
+        // }
+        if (event.createdBy.toString() !== user._id.toString()) {
+            return res.status(403).json({ success: false, message: "You are not authorized to edit this event" });
         }
 
         if (name !== event.name) {
@@ -190,8 +193,11 @@ const finishEvent = async (req, res) => {
             return res.status(400).json({ success: false, message: "Event Not Found" })
         }
 
-        if (!event.members.includes(_id)) {
-            return res.status(400).json({ success: false, message: "Unauthorized Request" })
+        // if (!event.members.includes(_id)) {
+        //     return res.status(400).json({ success: false, message: "Unauthorized Request" })
+        // }
+        if (event.createdBy.toString() !== user._id.toString()) {
+            return res.status(403).json({ success: false, message: "You are not authorized to finish this event" });
         }
 
         if (event.isFinished) {
@@ -239,8 +245,11 @@ const notFinishEvent = async (req, res) => {
             return res.status(400).json({ success: false, message: "Event Not Found" })
         }
 
-        if (!event.members.includes(_id)) {
-            return res.status(400).json({ success: false, message: "Unauthorized Request" })
+        // if (!event.members.includes(_id)) {
+        //     return res.status(400).json({ success: false, message: "Unauthorized Request" })
+        // }
+        if (event.createdBy.toString() !== user._id.toString()) {
+            return res.status(403).json({ success: false, message: "You are not authorized to continue this event" });
         }
 
         if (!event.isFinished) {
@@ -389,6 +398,10 @@ const removeFriend = async (req, res) => {
 
         if (!isFriendMember) {
             return res.status(400).json({ success: false, message: "Friend is already not in the event" })
+        }
+
+        if(friend._id.toString() === event.createdBy.toString()){
+            return res.status(403).json({ success: false, message: "You can't remove the admin from the event" })
         }
 
         event.members = event.members.filter(item => item.toString() !== friend._id.toString())

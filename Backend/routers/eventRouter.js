@@ -15,6 +15,6 @@ router.put('/removeFriend',verify,removeFriend)
 router.put('/finish',verify,finishEvent)
 router.put('/notFinish',verify,notFinishEvent)
 
-router.delete('/delete',verify,deleteEvent)
+router.post('/delete',verify,deleteEvent)
 
 module.exports = router
