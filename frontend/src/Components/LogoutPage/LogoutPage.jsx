@@ -18,6 +18,7 @@ export const LogoutPage = () => {
                     alert(response.data.message)
                     setLoading(false)
                     navigate("/")
+                    window.location.reload()
                 } else {
                     navigate("/")
                 }

@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 import "./RegisterPage.css"
 import { RegisterValidation } from '../../Functions/RegisterValidation'
 import axiosInstance from '../../Config/AxiosConfig'
+import { useNavigate } from 'react-router-dom'
 
 export const RegisterPage = () => {
+    const navigate = useNavigate()
     const [input, setInput] = useState({
         name: "",
         email: "",

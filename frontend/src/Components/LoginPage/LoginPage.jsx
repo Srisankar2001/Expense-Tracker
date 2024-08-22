@@ -43,7 +43,8 @@ export const LoginPage = () => {
                 const response = await axiosInstance.post("/auth/login", postData)
                 if (response.data.success) {
                     alert(response.data.message)
-                    navigate("/")
+                    // navigate("/")
+                    window.location.reload()
                 } else {
                     alert(response.data.message)
                 }
