@@ -106,6 +106,23 @@ h3 {
     background-color: #5a6268;
 }
 
+.Register-link {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.Register-link a {
+    font-size: 1rem;
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.Register-link a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     form {

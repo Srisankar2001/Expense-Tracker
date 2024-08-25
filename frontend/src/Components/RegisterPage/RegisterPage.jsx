@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import "./RegisterPage.css"
 import { RegisterValidation } from '../../Functions/RegisterValidation'
 import axiosInstance from '../../Config/AxiosConfig'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export const RegisterPage = () => {
     const navigate = useNavigate()
@@ -45,7 +45,7 @@ export const RegisterPage = () => {
         if (Object.values(errors).every(item => item === "")) {
             try {
                 const postData = {
-                    name: input.name.trim().charAt(0).toUpperCase() + input.name.trim().split(1).toLowerCase(),
+                    name: input.name.trim().charAt(0).toUpperCase() + input.name.trim().slice(1).toLowerCase(),
                     email: input.email.trim().toLowerCase(),
                     password: input.password.trim()
                 }
@@ -57,6 +57,7 @@ export const RegisterPage = () => {
                     alert(response.data.message)
                 }
             } catch (error) {
+                console.log(error)
                 alert(error.response?.data?.message || "Internal Server Error")
             }
         }
@@ -90,6 +91,9 @@ export const RegisterPage = () => {
                 <div className='Register-buttons'>
                     <input type='submit' value='Submit' />
                     <input type='reset' value='Clear' />
+                </div>
+                <div className='Register-link'>
+                    <Link to="/">Already have an account. Click Here to login</Link>
                 </div>
             </form>
         </div>
